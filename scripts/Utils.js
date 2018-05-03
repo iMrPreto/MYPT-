@@ -53,10 +53,12 @@ function createsWarning(btn_id, funcao, msg){
 
 // =================================================== Por comentar
 function hide(id){
-	$("#" + id).removeClass( "show" ).addClass( "hide" );
+	//$("#" + id).removeClass( "show" ).addClass( "hide" );
+	document.getElementById(id).style.display = 'none';
 }
 function show(id){
-	$("#" + id).removeClass( "hide" ).addClass( "show" );
+	//$("#" + id).removeClass( "hide" ).addClass( "show" );
+	document.getElementById(id).style.display = 'block';
 }
 function iniciarTreino(){
 	if (marcacaoHoje()){
