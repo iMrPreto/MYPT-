@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Plano de Treino Mensal</title>
+	<link rel="stylesheet" type="text/css" href="CSS/menutemplate.css">  
+    <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src= "scripts/calendario.js"></script>
+	<script src= "scripts/planos.js"></script>
+	<script src= "scripts/snacks.js"></script>
+	<script src= "scripts/Utils.js"></script>
+	<script src= "scripts/display.js"></script>
+	<script src= "scripts/timer.js"></script>
+	<script src= "scripts/avaliacao.js"></script>
+</head> 
+
+<body>
+	<header>
+		<div class = "grid-container">
+			<div class = "Logo"><img src = "assets/logo4.png" style = "margin-top: 24px" width = "340" height = "130"></div>
+            <div class = "User"><a href="userwebsite"><img src = "assets/user.png" style = "margin-top: 44px" width = "70" height = "70"></a></div>
+            
+		</div>
+	</header>
+<aside>
+	<div class = 'hide' id = "menuLateral">
+        <center> 
+		<button type="button" class='btmenu' id="btnmenu" onclick = 'createsWarning("btnmenu",menuInicial, "Tem a certeza que deseja voltar ao menu inicial?" )'> MENU </button><br><br>
+        <button type="button" class="btaside"id="btLatAcompanhamentoNut" onclick = 'menuAcompanhamentoNut()'> Acompanhamento Nutricional </button><br><br>
+        <button type="button" class="btaside" id="btLatAvaliacaoFisica" onclick= 'menuAvCondicaoFisica()'> Avaliação da Condição Física </button><br><br>
+		<button type="button" class="btaside" id= 'btLatplanoMensal' onclick='menuPlanoTreino()'> Plano de Treino Mensal </button><br><br>
+        <button type="button" class="btaside" id="btLatPlanoPersonalizado"> Plano de Treino Personalizado </button><br><br>
+		</center>
+	<div>
+</aside>
+<main>
+	<br>
+	<br>
+	<div id = 'menuPrincipal'>
+		<button type="button" class="bt" id="btAcompanhamentoNut1" onclick='menuAcompanhamentoNut()'> ACOMPANHAMENTO NUTRICIONAL </button><br><br>
+        <button type="button" class="bt" id="btAvaliacaoFisica1" onclick= 'menuAvCondicaoFisica()'> AVALIAÇÃO DA CONDIÇÃO FÍSICA </button><br><br>
+		<button type="button" class="bt" id= 'planoMensal1' onclick='menuPlanoTreino()'> PLANO DE TREINO MENSAL </button><br><br>
+        <button type="button" class="bt" id= "btPlanoPersonalizado1"> PLANO DE TREINO PERSONALIZADO </button><br><br>
+	</div>
+	
+	<div class = "topnav hide" id ='topnav'>
+		
+            <div class = "treinoShow hide" id="treinoStart">
+
+            	<!--                LISTA DE EXERCICIOS                   -->
+            	<div class = "esquemaTreino hide" id="esquema">
+					<h3>Exercícios:</h3>	
+				</div>
+				<!--.......................................................-->
+
+				<!--                Barra de Progresso                   -->
+             	<div class = "progressBar">
+             			
+             			<div id="bar"></div>
+				
+						<button  id ='btcomecarTreino'    class = "btcomecar"    style="margin-left: 10%"> Começar </button>
+						<button  id ='btcontinuarTreino'  class = "btcontinuar"  style="margin-left: 10%; display: none;"> Continuar  </button>
+
+						<button  id ='btPararTreino' class = "btcparar" style="margin-left: 10%; display: none;"> Parar </button>
+						<button  id ='voltar' class="btcvoltar" style="margin-left: 10%"> Sair </button>
+
+						<!-- Apresentacao para o Prof -->
+						<button  id ='acelera' style="margin-left: 10%; display: none;">Acelera</button>
+
+						
+
+             	</div>
+             	<!--.......................................................-->
+
+
+             	<!--                DISPLAY DAS IMAGENS                   -->
+             	<div class = "imagens" >
+				    <div id="divGifs" > </div>				    
+             	</div>
+
+         		<!--.......................................................-->
+				
+			</div> 
+			<script>
+			/** Estado da div antes do treino começar */
+			var div = document.getElementById('treinoStart'),
+		    clone = div.cloneNode(true); // true means clone all childNodes and all event handlers
+			clone.id = "treinoStart";
+			
+			</script>
+			
+			
+			
+			<!--........................... The Modal .................................!-->
+			<div id="myModal" class="modal" >
+			<!-- Modal content -->
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<center><h2  style="font-size:20px;color:black">AVISO</h2>
+					<p id = "msg_modal">Tem a certeza que pretende terminar a seleção?</p>
+					<button class="terminar" id = "conf" >CONFIRMAR</button>
+					<button class="terminar" id = "canc" autofocus="autofocus">CANCELAR</button>
+				</center>
+				</div>
+			</div>
+
+
+            <div id="calendarioShow">
+			    <div class = "calendar" id = "calendarTab">
+                    <h5 style="color: white; font-size: 16px" class = "hide" id="passo2">Passo 2/2 - Selecione o dia.</h2>
+                    <center>
+						<div id = 'calendarioMesAtual'>
+                   	 	<table  name = "calendario" id = "calendario1" style="width:100%">
+                    	  <tr>
+                   		     <th>DOM</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th><th>SAB</th>
+                   		     <script>createTableMesAtual();</script>
+                   		  </tr>
+						</table>
+					</div>
+						<div class = 'hide' id = 'calendarMesSeguinte'>
+						  <table  name = "calendarioSeguinte" id = "calendarioSeguinte" style="width:100%">
+							<tr>
+								  <th>DOM</th><th>SEG</th><th>TER</th><th>QUA</th><th>QUI</th><th>SEX</th><th>SAB</th>
+								  <script>createTableMesSeguinte();</script>
+							   </tr>
+						  </table>
+						</div>
+						<button id = "mesSeguinte"> Seguinte ></button><br><br>
+						<button id = "mesAnterior" class = 'hide'> < Anterior </button><br><br>
+						
+					</center>
+                </div>
+
+                <div class = "calendarBotoes hide" id = "calendarioStart">
+                <center><h5 id = 'passo1' style="color: white; font-size: 16px">Passo 1/2 - Selecione o tipo de treino a agendar</h2>
+                    <button class ='treino' id = "intensidade"> Intensidade</button><br><br>
+                    <button class ='treino' id = "resistencia">Resistência </button><br><br>
+					<button class ='treino' id = "tonificacao"> Tonificação </button><br><br>
+					<button class ='terminar hide' id = "terminar_selecao" onclick ="createsWarning('terminar_selecao', menuPlanoTreino, 'Tem a certeza que pretende terminar a seleção?')"> Terminar seleção </button><br><br>
+						  
+					<button class ='terminar hide' id = "terminar_selecao_individual"> Terminar seleção </button><br><br>
+					
+                </div>
+				
+            </div>
+				
+            <div class = "agendaShow" id="agendaID">
+                <button type="button" class="btaside" onclick="menuAgendaTreinos()">AGENDAR TREINOS</button><br><br>
+                <!--Quando tiver tudo aqui por isto so a aparecer se houver treino hoje -->
+				<button type="button" id ='iniciarTreinoHoje' class="btaside" onclick="iniciarTreino();"> INICIAR TREINO DIÁRIO </button><br><br> 
+            </div>
+			
+			<div class = "snackShow hide" id= "snackID">
+				<div id= "snackOpt">
+					<h5 id='passo1Nut'>Passo 1/2 - Selecione o tipo de treino que realizou ou irá realizar.<h5>
+					<button type="button" class="butNut" id = "intensidadeNut" >Intensidade</button><br><br>
+					<button type="button" class="butNut" id = "resistenciaNut"> Resistência  </button><br><br>
+					<button type="button" class="butNut" id = "tonificacaoNut"> Tonificação </button><br><br>
+					<h5 id='passo2Nut'>Passo 2/2 - Selecione o aconselhamento nutricional antes ou após treino.<h5>
+					<button type="button" class="butNut" id = "preNut"> Pré-Treino </button><br><br>
+					<button type="button" class="butNut" id = "posNut"> Pós-Treino </button><br><br>
+
+					<button class ='terminarNut terminar' id = "terminar_selecao_Nut" > Terminar seleção </button><br><br>
+				</div>
+				
+				<div>
+					<div class = "descritivoNut" id="textoNutritivo">
+					
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class= 'hide' id = 'avCondFisicaID'>
+			  <div id='inicialAv'>
+				<h4> Selecione o tipo de avaliação física que deseja realizar </h4>
+				<!--IMC-->
+				<button type="button" class = 'avaliacao' id = "avIMC" >Cálculo do Índice de Massa Corporal</button><br><br>
+				<button type="button" class = 'info' id = "infoIMC" >info</button>
+				<div class = 'descricaoAv hide' id = 'descIMC'></div>
+				
+				<!--Ruffier-->
+				<button type="button" class = 'avaliacao' id = "avRuffier"> Teste de Ruffier-Dickson  </button><br><br>
+				<button type="button" class = 'info' id = "infoRuffier" >info</button>
+				<div class = 'descricaoAv hide' id = 'descRuffier'></div>
+				
+				<!--Abdominais-->
+				<button type="button" class = 'avaliacao' id = "avAbdominais"> Teste de Abdominais </button><br><br>
+				<button type="button" class = 'info' id = "infoAbdominais">info</button>
+				<div class = 'descricaoAv hide' id = 'descAbdominais'></div>
+			  </div>
+			  <div id = 'testesIndividuais'>
+				<div class = 'hide' id = 'testeIMC'> 
+					<h4> Cálculo do Índice de Massa Corporal </h4>
+					<button type="button" class = 'historico' id = "historicoIMC" >Histórico</button>
+					<p id = 'resultIMC'> </p>
+					<button type="button" class = 'voltar' id = "voltarIMC" >Voltar</button>
+				</div>
+				
+				<div class = 'hide' id = 'testeRuffier'> 
+					<h4> Teste de Ruffier-Dickson </h4>
+					<button type="button" class = 'historico' id = "historicoRuffier" >Histórico</button>
+					<div style="color:white;font-size: 18px">Em repouso calcule o número de pulsações durante quinze segundos. E insira-o:
+						<input type="number" id = "P1" class "inputBox" placeholder= "10" style="margin-left: 1.4%"></div><br>
+					<p id = 'exNumero'></p>
+					<div style="color:white;font-size: 18px">No final do exercício, calcule novamente o número de pulsações durante quinze segundos.E insira-o:
+						<input type="number" id = "P2" class "inputBox" placeholder= "10" style="margin-left: 1.4%"></div><br>
+					
+					<div style="color:white;font-size: 18px">Um minuto depois de finalizar o exercício, calcule o número de pulsações durante quinze segundos.E insira-o:
+						<input type="number" id = "P3" class "inputBox" placeholder= "10" style="margin-left: 1.4%"></div><br>
+					<button type="button" class = 'calcular' id = "calcularRuffier">Resultado Final</button>	
+					<p id = 'resultRuffier'> </p>
+					<button type="button" class = 'voltar' id = "voltarRuffier" >Voltar</button>
+				</div>
+			  </div>
+			
+			</div>
+			
+	</div>
+</main>
+<footer>
+	
+	<div class = "grid-container">
+
+	</div>
+</footer>
+</body>
+</html>
